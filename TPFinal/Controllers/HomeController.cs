@@ -13,18 +13,25 @@ namespace TPFinal.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Escribir()
         {
             ViewBag.Message = "Your application description page.";
 
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult AlAzar()
         {
             ViewBag.Message = "Tu pagina de contacto.";
 
             return View();
         }
+        public ActionResult Moderacion()
+        {
+            ViewBag.Message = "Tu pagina de contacto.";
+
+            return View();
+        }
+        
     }
 }
