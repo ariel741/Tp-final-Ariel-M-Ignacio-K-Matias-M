@@ -22,7 +22,7 @@ namespace TPFinal.Controllers
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Tu pagina de contacto.";
 
             return View();
         }
