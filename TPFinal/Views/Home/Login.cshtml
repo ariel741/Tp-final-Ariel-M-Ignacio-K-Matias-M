@@ -1,0 +1,16 @@
+﻿
+@{
+    @using TPFinal.Models;
+    @Model Usuarios;
+    ViewBag.Title = "Login";
+}
+
+@Html.BeginForm("Index", "Login", FormMethod.Post)
+{
+<h1>Login</h1>
+<br />
+<br />
+<p>Mail</p> <br /> @Html.TextBoxFor(model => model.Mail)
+<input type="submit" value="Entrar" />
+}
+

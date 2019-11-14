@@ -36,16 +36,18 @@ namespace TPFinal.Models
 
             while (Lector.Read())
             {
-                string Nombre = Lector["Campo"].ToString();
-                string Contraseña = Lector["campo"].ToString();
-                string Mail = Lector["campo"].ToString();
+                int IdUsuario = Convert.ToInt32(Lector["IdUsuario"]);
+                string Nombre = Lector["NombreUsuario"].ToString();
+                string Contraseña = Lector["Contraseña"].ToString();
+                string Mail = Lector["Mail"].ToString();
 
-                Usuarios Ayuda = new Usuarios(Nombre,Contraseña,Mail);
+                Usuarios Ayuda = new Usuarios(Nombre, Contraseña, Mail, IdUsuario);
                 Login.Add(Ayuda);
             }
 
             Desconectar(Conexion);
             return Login;
         }
+            
     }
 }
