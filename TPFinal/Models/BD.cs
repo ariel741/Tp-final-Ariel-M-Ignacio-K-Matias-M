@@ -48,6 +48,20 @@ namespace TPFinal.Models
             Desconectar(Conexion);
             return Login;
         }
-            
+
+        public static void InsertarUsuario()
+        {
+            SqlConnection Conexion = Conectar();
+            string Nombre = "TextoDelNombreDeUsuario";
+            string Contraseña = "TextoContraseña";
+            string Mail = "TextoMail";
+
+            SqlCommand consulta = Conexion.CreateCommand();
+            consulta.CommandType = System.Data.CommandType.Text;
+            consulta.CommandText = "Insert into NombredeCampo(Atributos) values("Nombre","Contraseña","Mail") ";
+
+            Desconectar(Conexion);  
+        }
+
     }
 }
