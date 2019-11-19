@@ -48,6 +48,27 @@ namespace TPFinal.Models
             Desconectar(Conexion);
             return Login;
         }
-            
+           
+        public static bool ExisteUsuario(Usuarios NombreU)
+        {
+            bool existe;
+            SqlConnection Conexion = Conectar();
+            SqlCommand cmd = new SqlCommand("spSelecUsuario", Conexion);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@username", NombreU.NombreU);
+            cmd.Parameters.AddWithValue("@contraseña", NombreU.Contraseña);
+
+            SqlDataReader Lector = cmd.ExecuteReader();
+            if(Lector.Read())
+            {
+                existe = true;
+            }
+            else
+            {
+                existe = false;
+            }
+            Desconectar(Conexion);
+            return existe;
+        }
     }
 }
