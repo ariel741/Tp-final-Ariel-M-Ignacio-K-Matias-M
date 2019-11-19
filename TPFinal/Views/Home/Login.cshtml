@@ -1,2 +1,16 @@
-﻿
+﻿@using TPFinal.Models;
+@model Usuarios
+@{
+    ViewBag.Title = "login";
+}
+@if (ViewBag.Error != "")
+{
+   <p>@ViewBag.Error</p>
+}
 
+@using (Html.BeginForm("Logueo", "Home", FormMethod.Post))
+{ 
+    <p>Username</p>@Html.TextBoxFor(model => model.NombreU)@Html.ValidationMessageFor(model => model.NombreU)<br />
+    <p>Contraseña</p>@Html.PasswordFor(model => model.Contraseña)@Html.ValidationMessageFor(model => model.Contraseña)<br />
+    <input type="submit" value="Enviar"/>
+}

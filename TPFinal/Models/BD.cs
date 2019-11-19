@@ -9,7 +9,7 @@ namespace TPFinal.Models
 {
     public static class BD
     {
-        public static string strdb = "Server=.;Database=BDD-Lunfar2;User Id=alumno; password=alumno;";
+        public static string strdb = "Server=.;Database=BDD-Lunfar2;Trusted_Connection=true;";
 
         private static SqlConnection Conectar()
         {
@@ -48,101 +48,27 @@ namespace TPFinal.Models
             Desconectar(Conexion);
             return Login;
         }
-
-        public static void InsertarUsuario()
+           
+        public static bool ExisteUsuario(Usuarios NombreU)
         {
+            bool existe;
             SqlConnection Conexion = Conectar();
-            string Nombre = "NombreUsuario";
-            string Contraseña = "Contraseña";
-            string Mail = "Mail";
+            SqlCommand cmd = new SqlCommand("spSelecUsuario", Conexion);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@username", NombreU.NombreU);
+            cmd.Parameters.AddWithValue("@contraseña", NombreU.Contraseña);
 
-            SqlCommand consulta = Conexion.CreateCommand();
-            consulta.CommandType = System.Data.CommandType.Text;
-            consulta.CommandText = "Insert into NombredeCampo(Atributos) values("+Nombre+","+Contraseña+","+Mail+") ";
-
-            Desconectar(Conexion);
-        }
-
-        public static List<Definiciones> Oficiales()
-        {
-            List<Definiciones> Oficial = new List<Definiciones>();
-            SqlConnection Conexion = Conectar();
-
-            SqlCommand consulta = Conexion.CreateCommand();
-            consulta.CommandType = System.Data.CommandType.Text;
-            consulta.CommandText = "SELECT * from Definicion";
-            SqlDataReader Lector = consulta.ExecuteReader();
-
-            while (Lector.Read())
+            SqlDataReader Lector = cmd.ExecuteReader();
+            if(Lector.Read())
             {
-                string Palabra = Lector["Palabra"].ToString();
-                string Desc = Lector["Descripcion"].ToString();
-                int FkPais = Convert.ToInt32(Lector["FkPais"]);
-                int Likes = Convert.ToInt32(Lector["Likes"]);
-                int Dislikes = Convert.ToInt32(Lector["Dislikes"]);
-                bool Ofi = Convert.ToBoolean(Lector["Oficial"]);
-                int IdPalabra = Convert.ToInt32(Lector["IdDefinicion"]);
-
-                if (Ofi==true)
-                {
-                    Definiciones Ayuda = new Definiciones(Palabra, Desc, FkPais, Ofi, Likes, Dislikes,IdPalabra);
-                    Oficial.Add(Ayuda);
-                }
+                existe = true;
             }
-
-            Desconectar(Conexion);
-            return Oficial;
-        }
-
-        public static List<Definiciones> OficialesxLetra(char Letra)
-        {
-            List<Definiciones> Oficial = new List<Definiciones>();
-            SqlConnection Conexion = Conectar();
-
-            SqlCommand consulta = Conexion.CreateCommand();
-            consulta.CommandType = System.Data.CommandType.Text;
-            consulta.CommandText = "SELECT * from Definicion WHERE Palabra LIKE '"+Letra.ToString()+"%'";
-            SqlDataReader Lector = consulta.ExecuteReader();
-
-            while (Lector.Read())
+            else
             {
-                string Palabra = Lector["Palabra"].ToString();
-                string Desc = Lector["Descripcion"].ToString();
-                int FkPais = Convert.ToInt32(Lector["FkPais"]);
-                int Likes = Convert.ToInt32(Lector["Likes"]);
-                int Dislikes = Convert.ToInt32(Lector["Dislikes"]);
-                bool Ofi = Convert.ToBoolean(Lector["Oficial"]);
-                int IdPalabra = Convert.ToInt32(Lector["IdDefinicion"]);
-
-                if (Ofi == true)
-                {
-                    Definiciones Ayuda = new Definiciones(Palabra, Desc, FkPais, Ofi, Likes, Dislikes, IdPalabra);
-                    Oficial.Add(Ayuda);
-                }
+                existe = false;
             }
-
             Desconectar(Conexion);
-            return Oficial;
+            return existe;
         }
-
-        public static string BuscarDef(int IdPalabra)
-        {
-            string Definicion="";
-            SqlConnection Conexion = Conectar();
-
-            SqlCommand consulta = Conexion.CreateCommand();
-            consulta.CommandType = System.Data.CommandType.Text;
-            consulta.CommandText = "SELECT Descripcion from Definicion WHERE IdDefinicion = "+IdPalabra+" ";
-            SqlDataReader Lector = consulta.ExecuteReader();
-
-            while (Lector.Read())
-            {
-                Definicion = Lector["Descripcion"].ToString();
-            }
-
-            return Definicion;
-        }
-
-       
     }
 }
