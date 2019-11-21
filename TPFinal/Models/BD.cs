@@ -9,7 +9,7 @@ namespace TPFinal.Models
 {
     public static class BD
     {
-        public static string strdb = "Server=.;Database=BDD-Lunfar2;Trusted_Connection=true;";
+        public static string strdb = "Server=.;Database=BDD-Lunfar2;User Id=alumno; password=alumno;";
 
         private static SqlConnection Conectar()
         {
@@ -48,7 +48,7 @@ namespace TPFinal.Models
             Desconectar(Conexion);
             return Login;
         }
-           
+
         public static bool ExisteUsuario(Usuarios NombreU)
         {
             bool existe;
@@ -59,7 +59,7 @@ namespace TPFinal.Models
             cmd.Parameters.AddWithValue("@contraseña", NombreU.Contraseña);
 
             SqlDataReader Lector = cmd.ExecuteReader();
-            if(Lector.Read())
+            if (Lector.Read())
             {
                 existe = true;
             }
@@ -70,5 +70,86 @@ namespace TPFinal.Models
             Desconectar(Conexion);
             return existe;
         }
+
+        public static string BuscarDef(int IdPalabra)
+        {
+            string Definicion = "";
+            SqlConnection Conexion = Conectar();
+
+            SqlCommand consulta = Conexion.CreateCommand();
+            consulta.CommandType = System.Data.CommandType.Text;
+            consulta.CommandText = "SELECT Descripcion from Definicion WHERE IdDefinicion = " + IdPalabra + " ";
+            SqlDataReader Lector = consulta.ExecuteReader();
+
+            while (Lector.Read())
+            {
+                Definicion = Lector["Descripcion"].ToString();
+            }
+
+            return Definicion;
+        }
+
+        public static List<Definiciones> OficialesxLetra(char Letra)
+        {
+            List<Definiciones> Oficial = new List<Definiciones>();
+            SqlConnection Conexion = Conectar();
+
+            SqlCommand consulta = Conexion.CreateCommand();
+            consulta.CommandType = System.Data.CommandType.Text;
+            consulta.CommandText = "SELECT * from Definicion WHERE Palabra LIKE '" + Letra.ToString() + "%'";
+            SqlDataReader Lector = consulta.ExecuteReader();
+
+            while (Lector.Read())
+            {
+                string Palabra = Lector["Palabra"].ToString();
+                string Desc = Lector["Descripcion"].ToString();
+                int FkPais = Convert.ToInt32(Lector["FkPais"]);
+                int Likes = Convert.ToInt32(Lector["Likes"]);
+                int Dislikes = Convert.ToInt32(Lector["Dislikes"]);
+                bool Ofi = Convert.ToBoolean(Lector["Oficial"]);
+                int IdPalabra = Convert.ToInt32(Lector["IdDefinicion"]);
+
+                if (Ofi == true)
+                {
+                    Definiciones Ayuda = new Definiciones(Palabra, Desc, FkPais, Ofi, Likes, Dislikes, IdPalabra);
+                    Oficial.Add(Ayuda);
+                }
+
+            }
+            Desconectar(Conexion);
+            return Oficial;
+        }
+
+        public static List<Definiciones> Oficiales()
+        {
+            List<Definiciones> Oficial = new List<Definiciones>();
+            SqlConnection Conexion = Conectar();
+
+            SqlCommand consulta = Conexion.CreateCommand();
+            consulta.CommandType = System.Data.CommandType.Text;
+            consulta.CommandText = "SELECT * from Definicion";
+            SqlDataReader Lector = consulta.ExecuteReader();
+            while (Lector.Read())
+            {
+                string Palabra = Lector["Palabra"].ToString();
+                string Desc = Lector["Descripcion"].ToString();
+                int FkPais = Convert.ToInt32(Lector["FkPais"]);
+                int Likes = Convert.ToInt32(Lector["Likes"]);
+                int Dislikes = Convert.ToInt32(Lector["Dislikes"]);
+                bool Ofi = Convert.ToBoolean(Lector["Oficial"]);
+                int IdPalabra = Convert.ToInt32(Lector["IdDefinicion"]);
+
+                if (Ofi == true)
+                {
+                    Definiciones Ayuda = new Definiciones(Palabra, Desc, FkPais, Ofi, Likes, Dislikes, IdPalabra);
+                    Oficial.Add(Ayuda);
+                }
+            }
+            Desconectar(Conexion);
+            return Oficial;
+        }
+
+
     }
+
 }
