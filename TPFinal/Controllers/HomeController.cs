@@ -23,6 +23,13 @@ namespace TPFinal.Controllers
             return View("Index");
         }
 
+        public ActionResult BuscarxLetraM(int Letra)
+        {
+            ViewBag.Palabras = BD.NOficialesxLetra(Convert.ToChar(Letra));
+            ViewBag.Letra = Letra;
+            return View("Moderacion");
+        }
+
         public ActionResult BuscarDefinicion(int IdPalabra, int Letra)
         {
             ViewBag.Definicion = BD.BuscarDef(IdPalabra);
@@ -39,6 +46,22 @@ namespace TPFinal.Controllers
             return View("Index");
         }
 
+        public ActionResult BuscarDefinicionM(int IdPalabra, int Letra)
+        {
+            ViewBag.Definicion = BD.BuscarDef(IdPalabra);
+            ViewBag.Letra = Letra;
+            if (Letra != -1)
+            {
+                ViewBag.Palabras = BD.NOficialesxLetra(Convert.ToChar(Letra));
+            }
+            else
+            {
+                ViewBag.Palabras = BD.Moderacion();
+            }
+
+            return View("Moderacion");
+        }
+
         public ActionResult Escribir()
         {
             ViewBag.Message = "Your application description page.";
@@ -48,45 +71,42 @@ namespace TPFinal.Controllers
 
         public ActionResult AlAzar()
         {
-            ViewBag.Message = "Tu pagina de contacto.";
-
             return View();
         }
+        public ActionResult Azar()
+        {
+            Definiciones Hola = BD.PalRandom();
+            ViewBag.Nom = Hola.Nombre;
+            ViewBag.Desc = Hola.Descripcion;
+            
+            return View("AlAzar");
+        }
+
         public ActionResult Moderacion()
         {
-            ViewBag.Message = "Tu pagina de contacto.";
-
+            ViewBag.Palabras = BD.Moderacion();
+            ViewBag.Letra = -1;
             return View();
         }
         public ActionResult Login()
         {
             
-
             return View();
         }
 
-        public ActionResult Logueo(Usuarios NombreU)
+        public ActionResult Moderaciones()
         {
-            bool existe;
-            
-                if(ModelState.IsValid)
-            {
-                existe = BD.ExisteUsuario(NombreU);
-                    if(existe)
-                {
-                    return View("Index");
-                }
-                else
-                {
-                    ViewBag.Error = "Nombre o contraseña incorrecto";
-                    return View("Login", NombreU);
-                }
-            }
-            else
-            {
-                return View("Login", NombreU);
-            }
-            return View();
+            return View("Moderacion");
+        }
+
+        public ActionResult Like()
+        {
+            return View("Moderacion");
+        }
+
+        public ActionResult DisLike()
+        {
+            return View("Moderacion");
         }
     }
 }

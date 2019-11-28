@@ -49,27 +49,7 @@ namespace TPFinal.Models
             return Login;
         }
 
-        public static bool ExisteUsuario(Usuarios NombreU)
-        {
-            bool existe;
-            SqlConnection Conexion = Conectar();
-            SqlCommand cmd = new SqlCommand("spSelecUsuario", Conexion);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@username", NombreU.NombreU);
-            cmd.Parameters.AddWithValue("@contraseña", NombreU.Contraseña);
-
-            SqlDataReader Lector = cmd.ExecuteReader();
-            if (Lector.Read())
-            {
-                existe = true;
-            }
-            else
-            {
-                existe = false;
-            }
-            Desconectar(Conexion);
-            return existe;
-        }
+        
 
         public static string BuscarDef(int IdPalabra)
         {
@@ -120,6 +100,37 @@ namespace TPFinal.Models
             return Oficial;
         }
 
+        public static List<Definiciones> NOficialesxLetra(char Letra)
+        {
+            List<Definiciones> NOficial = new List<Definiciones>();
+            SqlConnection Conexion = Conectar();
+
+            SqlCommand consulta = Conexion.CreateCommand();
+            consulta.CommandType = System.Data.CommandType.Text;
+            consulta.CommandText = "SELECT * from Definicion WHERE Palabra LIKE '" + Letra.ToString() + "%'";
+            SqlDataReader Lector = consulta.ExecuteReader();
+
+            while (Lector.Read())
+            {
+                string Palabra = Lector["Palabra"].ToString();
+                string Desc = Lector["Descripcion"].ToString();
+                int FkPais = Convert.ToInt32(Lector["FkPais"]);
+                int Likes = Convert.ToInt32(Lector["Likes"]);
+                int Dislikes = Convert.ToInt32(Lector["Dislikes"]);
+                bool Ofi = Convert.ToBoolean(Lector["Oficial"]);
+                int IdPalabra = Convert.ToInt32(Lector["IdDefinicion"]);
+
+                if (Ofi == false)
+                {
+                    Definiciones Ayuda = new Definiciones(Palabra, Desc, FkPais, Ofi, Likes, Dislikes, IdPalabra);
+                    NOficial.Add(Ayuda);
+                }
+
+            }
+            Desconectar(Conexion);
+            return NOficial;
+        }
+
         public static List<Definiciones> Oficiales()
         {
             List<Definiciones> Oficial = new List<Definiciones>();
@@ -149,7 +160,88 @@ namespace TPFinal.Models
             return Oficial;
         }
 
+        public static Definiciones PalRandom()
+        {
+            SqlConnection Conexion = Conectar();
+            int Menor=0;
+            int Mayor=0;
 
+            Definiciones Ran = new Definiciones("","",0,true,0,0,0);
+
+            SqlCommand consulta = Conexion.CreateCommand();
+            consulta.CommandType = System.Data.CommandType.Text;
+            consulta.CommandText = "SELECT TOP 1 IdDefinicion from Definicion order by IdDefinicion asc;";
+            SqlDataReader Lector = consulta.ExecuteReader();
+            while (Lector.Read())
+            {
+                 Menor = Convert.ToInt32(Lector["IdDefinicion"]);
+            }
+
+            Lector.Close();
+
+            SqlCommand consulta1 = Conexion.CreateCommand();
+            consulta1.CommandType = System.Data.CommandType.Text;
+            consulta1.CommandText = "SELECT TOP 1 IdDefinicion from Definicion order by IdDefinicion desc;";
+            SqlDataReader Lector1 = consulta1.ExecuteReader();
+            while (Lector1.Read())
+            {
+                 Mayor = Convert.ToInt32(Lector1["IdDefinicion"]);
+            }
+
+            Random r = new Random();
+            int aleatorio = r.Next(Menor, Mayor);
+
+            Lector1.Close();
+
+            SqlCommand consulta2 = Conexion.CreateCommand();
+            consulta2.CommandType = System.Data.CommandType.Text;
+            consulta2.CommandText = "SELECT * from Definicion where IdDefinicion ="+aleatorio+";";
+            SqlDataReader Lector2 = consulta2.ExecuteReader();
+            while (Lector2.Read())
+            {
+                string Palabra = Lector2["Palabra"].ToString();
+                string Desc = Lector2["Descripcion"].ToString();
+                int FkPais = Convert.ToInt32(Lector2["FkPais"]);
+                int Likes = Convert.ToInt32(Lector2["Likes"]);
+                int Dislikes = Convert.ToInt32(Lector2["Dislikes"]);
+                bool Ofi = Convert.ToBoolean(Lector2["Oficial"]);
+                int IdPalabra = Convert.ToInt32(Lector2["IdDefinicion"]);
+
+              Ran = new Definiciones(Palabra, Desc, FkPais, Ofi, Likes, Dislikes, IdPalabra);
+            }
+            Desconectar(Conexion);
+            return Ran;
+        }
+
+        public static List<Definiciones> Moderacion()
+        {
+            List<Definiciones> NoOficial = new List<Definiciones>();
+            SqlConnection Conexion = Conectar();
+
+            SqlCommand consulta = Conexion.CreateCommand();
+            consulta.CommandType = System.Data.CommandType.Text;
+            consulta.CommandText = "SELECT * from Definicion";
+            SqlDataReader Lector = consulta.ExecuteReader();
+            while (Lector.Read())
+            {
+                string Palabra = Lector["Palabra"].ToString();
+                string Desc = Lector["Descripcion"].ToString();
+                int FkPais = Convert.ToInt32(Lector["FkPais"]);
+                int Likes = Convert.ToInt32(Lector["Likes"]);
+                int Dislikes = Convert.ToInt32(Lector["Dislikes"]);
+                bool Ofi = Convert.ToBoolean(Lector["Oficial"]);
+                int IdPalabra = Convert.ToInt32(Lector["IdDefinicion"]);
+
+                if (Ofi == false)
+                {
+                    Definiciones Ayuda = new Definiciones(Palabra, Desc, FkPais, Ofi, Likes, Dislikes, IdPalabra);
+                    NoOficial.Add(Ayuda);
+                }
+            }
+            Desconectar(Conexion);
+            return NoOficial;
+        }
+            
     }
 
 }
