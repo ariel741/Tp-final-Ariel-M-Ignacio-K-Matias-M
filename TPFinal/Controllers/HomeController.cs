@@ -49,6 +49,7 @@ namespace TPFinal.Controllers
         public ActionResult BuscarDefinicionM(int IdPalabra, int Letra)
         {
             ViewBag.Definicion = BD.BuscarDef(IdPalabra);
+            ViewBag.IdPalabraDefinida = IdPalabra;
             ViewBag.Letra = Letra;
             if (Letra != -1)
             {
@@ -101,6 +102,7 @@ namespace TPFinal.Controllers
 
         public ActionResult Like()
         {
+
             return View("Moderacion");
         }
 
