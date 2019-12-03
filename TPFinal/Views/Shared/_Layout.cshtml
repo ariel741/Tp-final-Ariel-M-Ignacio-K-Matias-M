@@ -9,26 +9,39 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Lunfar2", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Escribir", "Escribir", "Home")</li>
-                    <li>@Html.ActionLink("Al Azar", "AlAzar", "Home")</li>
-                    <li>@Html.ActionLink("Moderacion", "Moderacion", "home")</li>
-                    <li>@Html.ActionLink("Inicio de sesion", "Login", "Home")</li>
-                </ul>
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    @Html.ActionLink("Lunfar2", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+
+                </li>
+                <li class="nav-item">
+                <li>@Html.ActionLink("Escribir", "Escribir", "Home", new { area = "" }, new { @class = "navbar-brand" })</li>
+                </li>
+                <li class="nav-item">
+                <li>@Html.ActionLink("Al Azar", "AlAzar", "Home", new { area = "" }, new { @class = "navbar-brand" })</li>
+                </li>
+                <li class="nav-item">
+                <li>@Html.ActionLink("Moderacion", "Moderacion", "home", new { area = "" }, new { @class = "navbar-brand" })</li>
+                </li>
+                <li class="nav-item">
+                <li>@Html.ActionLink("Inicio de sesion", "Login", "Home", new { area = "" }, new { @class = "navbar-brand" })</li>
+                </li>
+                <li class="nav-item">
+                <li>@Html.ActionLink("Registrarse", "Registro", "Home", new { area = "" }, new { @class = "navbar-brand" })</li>
+                </li>
+            </ul>
+            
         </div>
-    </div>
+    </nav>
+
+    
+
     <div class="container body-content">
         @RenderBody()
         <hr />

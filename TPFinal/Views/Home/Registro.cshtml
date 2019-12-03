@@ -1,0 +1,20 @@
+﻿@using TPFinal.Models;
+@model Usuarios
+@{
+    ViewBag.Title = "Registro";
+}
+
+
+@{
+
+    @using (Html.BeginForm("CrearUsuarios", "Home", FormMethod.Post))
+    {
+        <p>Usuario:</p> @Html.TextBoxFor(model => model.NombreU) <br /> @Html.ValidationMessageFor(model => model.NombreU); <br />
+        <p>Contraseña:</p> @Html.PasswordFor(model => model.Contraseña) @Html.ValidationMessageFor(model => model.Contraseña); <br />
+        <p>Mail:</p> @Html.TextBoxFor(model => model.Mail) <br />
+        <input type="submit" value="Enviar" />
+    }
+
+
+}
+

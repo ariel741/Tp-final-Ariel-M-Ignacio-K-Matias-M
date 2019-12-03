@@ -49,28 +49,7 @@ namespace TPFinal.Models
             return Login;
         }
 
-        public static bool ExisteUsuario(Usuarios NombreU)
-        {
-            bool existe;
-            SqlConnection Conexion = Conectar();
-            SqlCommand cmd = new SqlCommand("spSelecUsuario", Conexion);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@username", NombreU.NombreU);
-            cmd.Parameters.AddWithValue("@contraseña", NombreU.Contraseña);
-
-            SqlDataReader Lector = cmd.ExecuteReader();
-            if (Lector.Read())
-            {
-                existe = true;
-            }
-            else
-            {
-                existe = false;
-            }
-            Desconectar(Conexion);
-            return existe;
-        }
-
+       
         public static string BuscarDef(int IdPalabra)
         {
             string Definicion = "";
@@ -149,6 +128,43 @@ namespace TPFinal.Models
             return Oficial;
         }
 
+        public static void CrearUsuarios(Usuarios user)
+        {
+
+            SqlConnection Conexion = BD.Conectar();
+            SqlCommand Consulta = Conexion.CreateCommand();
+            Consulta.CommandType = System.Data.CommandType.StoredProcedure;
+            Consulta.CommandText = "sp_CrearUsuarios";
+            Consulta.Parameters.AddWithValue("NombreUsuario", user.NombreU);
+            Consulta.Parameters.AddWithValue("Mail", user.Mail);
+            Consulta.Parameters.AddWithValue("Contraseña", user.Contraseña);
+
+            Consulta.ExecuteNonQuery();
+
+            Conexion.Close();
+        }
+        public static bool ValidarUsuarios(Usuarios user)
+        {
+            bool Existe;
+            SqlConnection Conexion = BD.Conectar();
+            SqlCommand Consulta = Conexion.CreateCommand();
+            SqlCommand cmd = new SqlCommand("sp_VerificarUsuario", Conexion);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@NombreUsuario", user.NombreU);
+            cmd.Parameters.AddWithValue("@Contraseña", user.Contraseña);
+
+            SqlDataReader Lector = cmd.ExecuteReader();
+            if (Lector.Read())
+            {
+                Existe = true;
+            }
+            else
+            {
+                Existe = false;
+            }
+            Desconectar(Conexion);
+            return Existe;
+        }
 
     }
 

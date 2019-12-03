@@ -58,35 +58,48 @@ namespace TPFinal.Controllers
 
             return View();
         }
-        public ActionResult Login()
-        {
-            
+       
+        
 
-            return View();
-        }
-
-        public ActionResult Logueo(Usuarios NombreU)
+        public ActionResult Logueo(Usuarios user)
         {
-            bool existe;
-            
-                if(ModelState.IsValid)
+            bool Existe = BD.ValidarUsuarios(user);
+            if (ModelState.IsValid)
             {
-                existe = BD.ExisteUsuario(NombreU);
-                    if(existe)
+                if (Existe)
                 {
                     return View("Index");
                 }
                 else
                 {
-                    ViewBag.Error = "Nombre o contraseña incorrecto";
-                    return View("Login", NombreU);
+                    return View("Login");
+
                 }
             }
             else
             {
-                return View("Login", NombreU);
+                return View("Login");
             }
-            return View();
+
+
         }
-    }
+
+        public ActionResult CrearUsuarios(Usuarios user)
+        {
+            if (ModelState.IsValid)
+            {
+                BD.CrearUsuarios(user);
+                return View("Login");
+            }
+            else
+            {
+                return View("Registro", user);
+            }
+
+        }
+        public ActionResult Registro()
+        {
+            return View("Registro");
+        }
+    }   
 }
