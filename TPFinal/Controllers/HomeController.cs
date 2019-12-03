@@ -97,18 +97,23 @@ namespace TPFinal.Controllers
 
         public ActionResult Moderaciones()
         {
+            ViewBag.Palabras = BD.Moderacion();
+            ViewBag.Letra = -1;
             return View("Moderacion");
         }
 
         public ActionResult Like()
         {
-
+            ViewBag.Palabras = BD.Moderacion();
+            ViewBag.Letra = -1;
             return View("Moderacion");
         }
 
         public ActionResult DisLike()
         {
-            return View("Moderacion");
+            ViewBag.Palabras = BD.Moderacion();
+            ViewBag.Letra = -1;
+            return View("Moderacion"); // Likes y Dislikes
         }
     }
 }

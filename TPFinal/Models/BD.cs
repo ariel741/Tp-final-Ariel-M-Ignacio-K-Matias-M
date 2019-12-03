@@ -189,7 +189,7 @@ namespace TPFinal.Models
             }
 
             Random r = new Random();
-            int aleatorio = r.Next(Menor, Mayor);
+            int aleatorio = r.Next(Menor, Mayor + 1);//para sacar el ultimo que antes no sacaba + 1
 
             Lector1.Close();
 
@@ -240,8 +240,25 @@ namespace TPFinal.Models
             }
             Desconectar(Conexion);
             return NoOficial;
-        }
+
             
+        }
+        public static void likes(Definiciones todo)
+            {
+            SqlConnection Conexion = Conectar();
+            SqlCommand consulta = Conexion.CreateCommand();
+            consulta.CommandType = System.Data.CommandType.Text;
+            consulta.CommandText = "UPDATE Definicion SET Likes = " + todo.Likes + 1;
+            SqlDataReader Lector = consulta.ExecuteReader();
+        }
+        public static void Dislikes(Definiciones todo)
+        {
+            SqlConnection Conexion = Conectar();
+            SqlCommand consulta = Conexion.CreateCommand();
+            consulta.CommandType = System.Data.CommandType.Text;
+            consulta.CommandText = "UPDATE Definicion SET Dislikes = " + todo.Dislikes + 1;
+            SqlDataReader Lector = consulta.ExecuteReader();
+        }
     }
 
 }

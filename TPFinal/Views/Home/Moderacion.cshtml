@@ -28,10 +28,12 @@
         <p>@ViewBag.Definicion</p>
         @if (ViewBag.IdPalabraDefinida != null)
         {
-            <div class="col-md-4">
-                <a class="btn btn-default" href="@Url.Action("Like","Home",new { IdPalabra = ViewBag.IdPalabraDefinida })">Like✔</a>
-                <a class="btn btn-default" href="@Url.Action("DisLike","Home",new { IdPalabra = ViewBag.IdPalabraDefinida })">DisLike X</a>
-            </div>
+
+        <div class="col-md-4">
+            <a class="btn btn-default" href="@Url.Action("Like","Home",new { IdPalabra = ViewBag.IdPalabraDefinida })">Like✔</a>
+            <a class="btn btn-default" href="@Url.Action("DisLike","Home",new { IdPalabra = ViewBag.IdPalabraDefinida })">DisLike X</a>
+            
+        </div>
 
         }
 
