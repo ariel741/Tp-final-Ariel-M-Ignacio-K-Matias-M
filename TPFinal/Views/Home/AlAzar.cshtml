@@ -1,7 +1,26 @@
-﻿@{
+﻿@using TPFinal.Models;
+@{
     ViewBag.Title = "AlAzar";
+    List<Definiciones> auxOficiales = ViewBag.Oficiales;
+    Random rand = new Random();
 }
+
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+
+<a class="btn btn-default" href="@Url.Action("Azar","Home")"> Palabra Al Azar &raquo;</a>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Palabras</h2>
+        <p>@ViewBag.Nom</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Definiciones</h2>
+        <p>@ViewBag.Desc</p>
+
+    </div>
+</div>
+
+
